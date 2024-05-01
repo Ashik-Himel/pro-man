@@ -14,7 +14,6 @@ export default function ProjectCard({ project, refetch }) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [NewProjectName, setNewProjectName] = useState(name);
-  const [newToDo, setNewToDo] = useState(toDo);
   const [newMembers, setNewMembers] = useState(members);
 
   let status;
@@ -28,7 +27,6 @@ export default function ProjectCard({ project, refetch }) {
 
     const document = {
       name: NewProjectName,
-      toDo: newToDo,
       members: newMembers,
     }
     axios.put(`/projects/${id}`, document)
@@ -64,11 +62,11 @@ export default function ProjectCard({ project, refetch }) {
         <div className="flex justify-center items-center gap-4">
           <div className="flex justify-center item-center gap-2 text-gray-600" title="Total Members">
             <FaUsers className="text-2xl" />
-            <span>{members.length}</span>
+            <span>{members?.length}</span>
           </div>
           <div className="flex justify-center item-center gap-2 text-gray-600" title="Total Tasks">
             <IoDocumentsSharp className="text-[22px]" />
-            <span>{toDo.length + doing.length + done.length}</span>
+            <span>{toDo?.length + doing?.length + done?.length}</span>
           </div>
         </div>
 
@@ -87,19 +85,11 @@ export default function ProjectCard({ project, refetch }) {
           onOk={handleEditProject}
           onCancel={() => setEditModalOpen(false)}
         >
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="name" className="font-medium block mb-2">Project Name</label>
             <input className="border border-gray-300 w-full py-2 px-4 rounded-lg mb-4 focus:border-2 focus:border-blue-600 focus:outline-none" type="text" name="name" id="name" placeholder="Enter project name" onChange={e => setNewProjectName(e.target.value)} value={NewProjectName} required />
 
-            <label htmlFor="ToDo" className="font-medium block mb-2">ToDo</label>
-            <TagsInput
-              value={newToDo}
-              onChange={setNewToDo}
-              name="ToDo"
-              placeHolder="Enter all task to do"
-            />
-
-            <label htmlFor="Members" className="font-medium block mb-2 mt-4">Members</label>
+            <label htmlFor="Members" className="font-medium block mb-2">Members</label>
             <TagsInput
               value={newMembers}
               onChange={setNewMembers}

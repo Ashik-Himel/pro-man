@@ -17,7 +17,15 @@ export default function AllProjects({ projects, refetch }) {
 
     const document = {
       name: projectName,
-      toDo,
+      toDo: toDo?.map(item => {
+        return {
+          title: item,
+          description: "",
+          deadline: "",
+          member: "",
+          completed: false
+        }
+      }),
       members,
     }
     axios.post('/projects', document)
@@ -43,7 +51,7 @@ export default function AllProjects({ projects, refetch }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {
-          projects?.length ? projects?.map(project => <ProjectCard key={project?._id} project={project} refetch={refetch} />) : <div className="bg-[rgba(100,13,107,0.1)] border-2 border-primary rounded-lg px-6 py-4 font-medium text-center lg:col-span-2">
+          projects?.length ? projects?.map(project => <ProjectCard key={project?.id} project={project} refetch={refetch} />) : <div className="bg-[rgba(100,13,107,0.1)] border-2 border-primary rounded-lg px-6 py-4 font-medium text-center lg:col-span-2">
             <p>No project available to show! <button className="text-primary underline">Create project</button></p>
           </div>
         }
@@ -57,7 +65,7 @@ export default function AllProjects({ projects, refetch }) {
           onOk={handleAddProject}
           onCancel={() => setAddModalOpen(false)}
         >
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="name" className="font-medium block mb-2">Project Name</label>
             <input className="border border-gray-300 w-full py-2 px-4 rounded-lg mb-4 focus:border-2 focus:border-blue-600 focus:outline-none" type="text" name="name" id="name" placeholder="Enter project name" onChange={e => setProjectName(e.target.value)} value={projectName} required />
 
