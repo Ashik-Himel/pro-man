@@ -3,23 +3,24 @@ import NotFound from "@/app/not-found";
 import ProjectDetailsCard from "@/components/dashboard/projectDetailsCard";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import axios from "axios";
 import Loading from "@/app/loading";
 import { Button, ConfigProvider } from "antd";
 import toast from "react-hot-toast";
+import axiosInstance from "@/lib/axiosInstance";
 
 export default function Page() {
+  const axios = axiosInstance();
   const params = useParams();
   const {data: project, isLoading, refetch} = useQuery({
     queryKey: ["projects", params?.id],
     queryFn: async() => {
-      const res = await axios(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${params?.id}`);
+      const res = await axios(`/projects/${params?.id}`);
       return res.data;
     }
   })
 
   const handleReopen = () => {
-    axios.put(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${project?.id}`, {closed: false})
+    axios.put(`/projects/${project?.id}`, {closed: false})
       .then(res => {
         if (res.data?.modifiedCount) {
           toast.success("Project reopened!");

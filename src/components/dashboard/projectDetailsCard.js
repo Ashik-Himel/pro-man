@@ -5,12 +5,13 @@ import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 import { PoweroffOutlined, EditFilled, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { TagsInput } from "react-tag-input-component";
+import axiosInstance from "@/lib/axiosInstance";
 
 export default function ProjectDetailsCard({ project, refetch }) {
+  const axios = axiosInstance();
   const router = useRouter();
   const { id, name, toDo, doing, done, activities, members } = project;
   const [sidebarShow, setSidebarShow] = useState(false);
@@ -31,7 +32,7 @@ export default function ProjectDetailsCard({ project, refetch }) {
       toDo: newToDo,
       members: newMembers,
     }
-    axios.put(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${id}`, document)
+    axios.put(`/projects/${id}`, document)
       .then(res => {
         if (res.data?.modifiedCount) {
           refetch();
@@ -45,7 +46,7 @@ export default function ProjectDetailsCard({ project, refetch }) {
     setSidebarShow(false);
     setCloseModalOpen(false);
 
-    axios.put(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${id}`, {closed: true})
+    axios.put(`/projects/${id}`, {closed: true})
       .then(res => {
         if (res.data?.modifiedCount) {
           refetch();

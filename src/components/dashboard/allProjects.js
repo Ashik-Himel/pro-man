@@ -1,11 +1,12 @@
 import ProjectCard from "@/components/dashboard/projectCard";
+import axiosInstance from "@/lib/axiosInstance";
 import { ConfigProvider, Modal } from "antd";
-import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { TagsInput } from "react-tag-input-component";
 
 export default function AllProjects({ projects, refetch }) {
+  const axios = axiosInstance();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [toDo, setToDo] = useState([]);
@@ -19,7 +20,7 @@ export default function AllProjects({ projects, refetch }) {
       toDo,
       members,
     }
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects`, document)
+    axios.post('/projects', document)
       .then(res => {
         if (res.data?.insertedId) {
           refetch();

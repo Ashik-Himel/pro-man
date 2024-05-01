@@ -1,14 +1,15 @@
 'use client';
 import { useQuery } from "@tanstack/react-query";
 import AllProjects from "@/components/dashboard/allProjects";
-import axios from "axios";
 import Loading from "../loading";
+import axiosInstance from "@/lib/axiosInstance";
 
 export default function Page() {
+  const axios = axiosInstance();
   const {data: projects, isLoading, refetch} = useQuery({
     queryKey: ["projects"],
     queryFn: async() => {
-      const res = await axios(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects`);
+      const res = await axios('/projects');
       return res.data;
     }
   })

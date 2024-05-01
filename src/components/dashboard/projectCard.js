@@ -1,5 +1,5 @@
+import axiosInstance from "@/lib/axiosInstance";
 import { ConfigProvider, Modal } from "antd";
-import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TagsInput } from "react-tag-input-component";
 
 export default function ProjectCard({ project, refetch }) {
+  const axios = axiosInstance();
   const { id, name, members, toDo, doing, done, closed } = project;
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function ProjectCard({ project, refetch }) {
       toDo: newToDo,
       members: newMembers,
     }
-    axios.put(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${id}`, document)
+    axios.put(`/projects/${id}`, document)
       .then(res => {
         if (res.data?.modifiedCount) {
           refetch();
@@ -41,7 +42,7 @@ export default function ProjectCard({ project, refetch }) {
       .catch(error => toast.error(error.message));
   }
   const handleDeleteProject = () => {
-    axios.delete(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/projects/${id}`)
+    axios.delete(`/projects/${id}`)
       .then(res => {
         if (res.data?.deletedCount) {
           refetch();
