@@ -1,4 +1,5 @@
 'use client';
+import { userStore } from '@/store/useStore';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, ConfigProvider, Modal } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
@@ -10,37 +11,18 @@ import toast from 'react-hot-toast';
 export default function LoginForm() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const email = "admin@pro-man.vercel.app";
-  const password = "Admin@1234";
+  const { email, password } = userStore(state => state?.user);
   
   const onFinish = values => {
     if (values?.email == email && values?.password == password) {
       toast.success("Login Successful!");
       router.replace('/dashboard');
-    } else {
-      toast.error("Invalid login credentials!");
     }
+    else toast.error("Invalid login credentials!");
   }
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <ConfigProvider
-      theme={{
-        "token": {
-          "colorPrimary": "#640d6b",
-        }
-      }}
-    >
+    <ConfigProvider theme={{"token": {"colorPrimary": "#640d6b",}}}>
       <Form
         name="login"
         className="space-y-3 flex-1"
@@ -52,6 +34,7 @@ export default function LoginForm() {
         <FormItem>
           <h2 className='text-2xl font-medium text-primary text-center uppercase'>Login</h2>
         </FormItem>
+
         <FormItem
           name="email"
           rules={[
@@ -67,6 +50,7 @@ export default function LoginForm() {
             placeholder="Email"
           />
         </FormItem>
+
         <FormItem
           name="password"
           rules={[
@@ -82,11 +66,11 @@ export default function LoginForm() {
             placeholder="Password"
           />
         </FormItem>
+
         <FormItem>
           <FormItem name="remember" valuePropName="checked" noStyle>
             <Checkbox>Remember me</Checkbox>
           </FormItem>
-
           <Link href='' className='text-primary font-medium'>Forgot Password?</Link>
         </FormItem>
 
@@ -94,14 +78,15 @@ export default function LoginForm() {
           <Button type="primary" htmlType="submit">
             Log in
           </Button>
-          <span className='italic underline font-medium text-sm text-primary cursor-pointer select-none ml-4' onClick={showModal}>Login credentials</span>
+          <span className='italic underline font-medium text-sm text-primary cursor-pointer select-none ml-4' onClick={() => setIsModalOpen(true)}>Login credentials</span>
           <p className='mt-3'>New to ProMan? <Link href='' className='text-primary font-medium'>Register Now!</Link></p>
         </FormItem>
-        <Modal title="Login Credentials" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <p><span className='font-medium'>Email:</span> admin@pro-man.vercel.app</p>
-          <p><span className='font-medium'>Password:</span> Admin@1234</p>
-        </Modal>
       </Form>
+
+      <Modal title="Login Credentials" centered open={isModalOpen} onOk={() => setIsModalOpen(false)} onCancel={() => setIsModalOpen(false)}>
+        <p><span className='font-medium'>Email:</span> admin@pro-man.vercel.app</p>
+        <p><span className='font-medium'>Password:</span> Admin@1234</p>
+      </Modal>
     </ConfigProvider>
   );
 }
