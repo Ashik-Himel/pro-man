@@ -71,7 +71,7 @@ export default function Sidebar({ id, name, activities, members, closeModalOpen,
           <h4 className="text-[18px] font-medium uppercase mb-1">Recent Activities</h4>
           <ul className="space-y-1 list-disc list-inside">
             {
-              activities?.length ? activities?.map(activity => <li key={activity}>{activity}</li>) : <p className="italic font-medium text-gray-600">No activities to show</p>
+              activities?.length ? activities?.slice(0, 5)?.map((activity, index) => <li key={index}>{activity}</li>) : <p className="italic font-medium text-gray-600">No activities to show</p>
             }
           </ul>
         </div>
@@ -80,7 +80,7 @@ export default function Sidebar({ id, name, activities, members, closeModalOpen,
           <h4 className="text-[18px] font-medium uppercase mb-1">Team Members</h4>
           <div className="space-y-1">
             {
-              members?.length ? members?.map(member => <div key={member} className="flex justify-start items-center gap-2">
+              members?.length ? members?.map((member, index) => <div key={index} className="flex justify-start items-center gap-2">
                 <FaUser />
                 <p>{member}</p>
               </div>) : <p className="italic font-medium text-gray-600">No members to show</p>

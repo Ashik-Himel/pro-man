@@ -2,45 +2,41 @@
   {
     "id": 1,
     "name": "ProMan MERN App",
-    "toDo": [
+    "tasks": [
       {
         "title": "Add interactivity to dashboard",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       },
       {
         "title": "Implement authentication",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "Ashik Himel",
-        "completed": false
-      }
-    ],
-    "doing": [
+        "status": "todo"
+      },
       {
         "title": "Dashboard page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
-      }
-    ],
-    "done": [
+        "status": "doing"
+      },
       {
         "title": "Login page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "done"
       },
       {
         "title": "Registration page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       }
     ],
     "members": [
@@ -54,45 +50,41 @@
   {
     "id": 2,
     "name": "ProMan MERN App",
-    "toDo": [
+    "tasks": [
       {
         "title": "Add interactivity to dashboard",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       },
       {
         "title": "Implement authentication",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "Ashik Himel",
-        "completed": false
-      }
-    ],
-    "doing": [
+        "status": "todo"
+      },
       {
         "title": "Dashboard page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
-      }
-    ],
-    "done": [
+        "status": "doing"
+      },
       {
         "title": "Login page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "done"
       },
       {
         "title": "Registration page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       }
     ],
     "members": [
@@ -106,45 +98,41 @@
   {
     "id": 3,
     "name": "ProMan MERN App",
-    "toDo": [
+    "tasks": [
       {
         "title": "Add interactivity to dashboard",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       },
       {
         "title": "Implement authentication",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "Ashik Himel",
-        "completed": false
-      }
-    ],
-    "doing": [
+        "status": "todo"
+      },
       {
         "title": "Dashboard page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
-      }
-    ],
-    "done": [
+        "status": "doing"
+      },
       {
         "title": "Login page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "done"
       },
       {
         "title": "Registration page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       }
     ],
     "members": [
@@ -158,45 +146,41 @@
   {
     "id": 4,
     "name": "ProMan MERN App",
-    "toDo": [
+    "tasks": [
       {
         "title": "Add interactivity to dashboard",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       },
       {
         "title": "Implement authentication",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "Ashik Himel",
-        "completed": false
-      }
-    ],
-    "doing": [
+        "status": "todo"
+      },
       {
         "title": "Dashboard page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
-      }
-    ],
-    "done": [
+        "status": "doing"
+      },
       {
         "title": "Login page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "done"
       },
       {
         "title": "Registration page design",
         "description": "This is the task description",
         "deadline": "2024-05-10",
         "member": "",
-        "completed": false
+        "status": "todo"
       }
     ],
     "members": [

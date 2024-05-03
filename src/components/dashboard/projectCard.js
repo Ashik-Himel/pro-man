@@ -10,7 +10,7 @@ import { TagsInput } from "react-tag-input-component";
 
 export default function ProjectCard({ project, refetch }) {
   const axios = axiosInstance();
-  const { id, name, members, toDo, doing, done, closed } = project;
+  const { id, name, members, tasks, closed } = project;
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [NewProjectName, setNewProjectName] = useState(name);
@@ -18,8 +18,8 @@ export default function ProjectCard({ project, refetch }) {
 
   let status;
   if (closed) status = "Closed";
-  else if (doing.length) status = "Running";
-  else if (toDo.length) status = "Pending";
+  else if (tasks?.filter(task => task?.status === 'doing')?.length) status = "Running";
+  else if (tasks?.filter(task => task?.status === 'todo')?.length) status = "Pending";
   else status = "Completed";
 
   const handleEditProject = () => {
@@ -66,7 +66,7 @@ export default function ProjectCard({ project, refetch }) {
           </div>
           <div className="flex justify-center item-center gap-2 text-gray-600" title="Total Tasks">
             <IoDocumentsSharp className="text-[22px]" />
-            <span>{toDo?.length + doing?.length + done?.length}</span>
+            <span>{tasks?.length}</span>
           </div>
         </div>
 

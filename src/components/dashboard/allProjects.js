@@ -9,7 +9,7 @@ export default function AllProjects({ projects, refetch }) {
   const axios = axiosInstance();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [projectName, setProjectName] = useState('');
-  const [toDo, setToDo] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [members, setMembers] = useState([]);
 
   const handleAddProject = () => {
@@ -17,15 +17,7 @@ export default function AllProjects({ projects, refetch }) {
 
     const document = {
       name: projectName,
-      toDo: toDo?.map(item => {
-        return {
-          title: item,
-          description: "",
-          deadline: "",
-          member: "",
-          completed: false
-        }
-      }),
+      tasks,
       members,
     }
     axios.post('/projects', document)
@@ -34,7 +26,7 @@ export default function AllProjects({ projects, refetch }) {
           refetch();
           setAddModalOpen(false);
           setProjectName('');
-          setToDo([]);
+          setTasks([]);
           setMembers([]);
           toast.success("Project added successfully!");
         } else toast.error("Project not added!");
@@ -52,7 +44,7 @@ export default function AllProjects({ projects, refetch }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {
           projects?.length ? projects?.map(project => <ProjectCard key={project?.id} project={project} refetch={refetch} />) : <div className="bg-[rgba(100,13,107,0.1)] border-2 border-primary rounded-lg px-6 py-4 font-medium text-center lg:col-span-2">
-            <p>No project available to show! <button className="text-primary underline">Create project</button></p>
+            <p>No project available to show! <button className="text-primary underline" onClick={() => setAddModalOpen(true)}>Create project</button></p>
           </div>
         }
       </div>
@@ -69,11 +61,11 @@ export default function AllProjects({ projects, refetch }) {
             <label htmlFor="name" className="font-medium block mb-2">Project Name</label>
             <input className="border border-gray-300 w-full py-2 px-4 rounded-lg mb-4 focus:border-2 focus:border-blue-600 focus:outline-none" type="text" name="name" id="name" placeholder="Enter project name" onChange={e => setProjectName(e.target.value)} value={projectName} required />
 
-            <label htmlFor="ToDo" className="font-medium block mb-2">ToDo</label>
+            <label htmlFor="tasks" className="font-medium block mb-2">Tasks</label>
             <TagsInput
-              value={toDo}
-              onChange={setToDo}
-              name="ToDo"
+              value={tasks}
+              onChange={setTasks}
+              name="tasks"
               placeHolder="Enter all task to do"
             />
 

@@ -5,5 +5,10 @@ export const userStore = create((set) => ({
     email: "admin@pro-man.vercel.app",
     password: "Admin@1234"
   },
-  setUser: user => set({ user: user }),
+  setUser: (newUser) => set({ user: newUser }),
 }));
+
+export const tasksStore = create((set) => ({
+  tasks: null,
+  setTasks: (newTasks) => set({ tasks: newTasks })
+}))

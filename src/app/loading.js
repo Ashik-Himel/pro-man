@@ -6,7 +6,7 @@ export default function Loading() {
     <main>
       <div className="container">
         <div className="h-screen flex justify-center items-center">
-          <Image src={loadingGif} alt="Loading Animation GIF" className="w-full max-w-[200px]" />
+          <Image src={loadingGif} alt="Loading Animation GIF" className="w-full max-w-[200px]" unoptimized />
         </div>
       </div>
     </main>

@@ -7,14 +7,17 @@ import Loading from "@/app/loading";
 import { Button, ConfigProvider } from "antd";
 import toast from "react-hot-toast";
 import axiosInstance from "@/lib/axiosInstance";
+import { tasksStore } from "@/store/useStore";
 
 export default function Page() {
+  const setTasks = tasksStore((state) => state.setTasks);
   const axios = axiosInstance();
   const params = useParams();
   const {data: project, isLoading, refetch} = useQuery({
     queryKey: ["projects", params?.id],
     queryFn: async() => {
       const res = await axios(`/projects/${params?.id}`);
+      setTasks(res.data?.tasks);
       return res.data;
     }
   })
