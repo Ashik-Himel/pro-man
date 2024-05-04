@@ -1,6 +1,5 @@
-import { moveArrayElement } from '@/lib/arrayFunctions';
 import { tasksStore } from '@/store/useStore';
-import { Button } from "antd";
+import { Button, ConfigProvider, Tooltip } from "antd";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -49,9 +48,16 @@ export default function ProjectDetailsCard({ project, refetch }) {
 
   const handleDragEnd = (event) => {
     const { source, destination, draggableId } = event;
+    if (source?.droppableId === destination?.droppableId && source?.index === destination?.index) return;
 
-    if (source?.droppableId !== destination?.droppableId) {
-      const statusUpdatedArray = tasks?.map(item => {
+    if (source?.droppableId === destination?.droppableId) {
+      const newArray = Array.from(tasks);
+      const item = newArray.splice(source?.index, 1)[0];
+      newArray.splice(destination?.index, 0, item);
+      setTasks(newArray);
+    }
+    else if (source?.droppableId !== destination?.droppableId) {
+      const updatedArray = tasks?.map(item => {
         if (item?.id === draggableId) {
           item.status = destination?.droppableId;
           return item;
@@ -59,7 +65,13 @@ export default function ProjectDetailsCard({ project, refetch }) {
         return item;
       })
 
-      const updatedArray = moveArrayElement(statusUpdatedArray, source?.index, destination?.index);
+      if (source?.index < destination?.index) {
+        const item = updatedArray.splice(source?.index, 1)[0];
+        updatedArray.splice(destination?.index - 1, 0, item);
+      } else {
+        const item = updatedArray.splice(source?.index, 1)[0];
+        updatedArray.splice(destination?.index, 0, item);
+      }
       setTasks(updatedArray);
     }
   }
@@ -70,7 +82,11 @@ export default function ProjectDetailsCard({ project, refetch }) {
         <div className="flex justify-between items-center gap-4 mb-6">
           <div className="flex justify-start items-center gap-4 w-[calc(100%-40px)] sm:w-[calc(100%-168px)]">
             <Link href='/dashboard' className="bg-gray-300 flex justify-center items-center gap-1 py-px px-2 rounded font-medium"><RiArrowLeftSLine className="text-xl" /> Back</Link>
-            <h2 className="text-xl font-medium text-ellipsis overflow-hidden text-nowrap" title={name}>{name}</h2>
+            <ConfigProvider theme={{"token": {"colorPrimary": "#640d6b",}}}>
+              <Tooltip title={name} placement='bottom' color='#640d6b'>
+                <h2 className="text-xl font-medium text-ellipsis overflow-hidden text-nowrap">{name}</h2>
+              </Tooltip>
+            </ConfigProvider>
           </div>
           <div className="flex justify-center items-center gap-4">
             <Button type="primary" danger className="!hidden sm:!block" onClick={() => setCloseModalOpen(true)}>Close Project</Button>
@@ -120,9 +136,9 @@ export default function ProjectDetailsCard({ project, refetch }) {
 
         <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-3 gap-6 mt-8">
           <DragDropContext onDragEnd={handleDragEnd}>
-            <TaskColumn title='todo' tasks={tasks?.filter(task => task?.status === "todo")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
-            <TaskColumn title='doing' tasks={tasks?.filter(task => task?.status === "doing")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
-            <TaskColumn title='done' tasks={tasks?.filter(task => task?.status === "done")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+            <TaskColumn title='todo' refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+            <TaskColumn title='doing' refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+            <TaskColumn title='done' refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
           </DragDropContext>
         </div>
       </div>

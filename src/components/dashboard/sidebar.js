@@ -1,12 +1,12 @@
+import axiosInstance from "@/lib/axiosInstance";
+import { EditFilled, PoweroffOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, Flex, Modal } from "antd";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { PoweroffOutlined, EditFilled } from '@ant-design/icons';
 import { TagsInput } from "react-tag-input-component";
-import axiosInstance from "@/lib/axiosInstance";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { useEffect, useRef, useState } from "react";
 
 export default function Sidebar({ id, name, activities, members, closeModalOpen, setCloseModalOpen, sidebarShow, setSidebarShow, barRef, refetch, }) {
   const axios = axiosInstance();
@@ -19,6 +19,7 @@ export default function Sidebar({ id, name, activities, members, closeModalOpen,
   const handleEditProject = () => {
     setCloseModalOpen(false);
     if (!NewProjectName) return;
+    setEditModalOpen(false);
 
     const document = {
       name: NewProjectName,
@@ -28,7 +29,6 @@ export default function Sidebar({ id, name, activities, members, closeModalOpen,
       .then(res => {
         if (res.data?.modifiedCount) {
           refetch();
-          setEditModalOpen(false);
           toast.success("Project updated successfully!");
         } else toast.error("Project not updated!");
       })

@@ -8,7 +8,8 @@ import toast from 'react-hot-toast';
 import { FaXmark } from 'react-icons/fa6';
 import Task from './task';
 
-export default function TaskColumn({title, tasks, refetch, members, setSearchValue, setFilterValue}) {
+export default function TaskColumn({title, refetch, members, setSearchValue, setFilterValue}) {
+  const tasks = (tasksStore(state => state.tasks)).filter(task => task?.status === title);
   const setTasks = tasksStore(state => state.setTasks);
   const {id: projectId} = useParams();
   const axios = axiosInstance();
@@ -69,7 +70,7 @@ export default function TaskColumn({title, tasks, refetch, members, setSearchVal
         <button className='font-medium flex justify-start items-center gap-1 pt-2 pb-[7px]' ref={addTaskRef} onClick={() => setAddInputShow(true)}><PlusOutlined /> Add Task</button>
         <div className={`absolute top-1 left-0 right-0 z-10 overflow-hidden transition-[width] duration-300 ${addInputShow ? 'w-full' : 'w-0'}`} ref={addInputRef}>
           <form className='flex justify-center items-center bg-white border-2 border-primary rounded' onSubmit={handleAddTask}>
-            <input className='flex-1 bg-transparent outline-none pl-4 py-1.5' type="text" name="addTask" id="addTask" placeholder='Task title' required />
+            <input className='w-full flex-1 bg-transparent outline-none pl-4 py-1.5' type="text" name="addTask" id="addTask" placeholder='Task title' required />
             <div className='px-2 py-1.5 text-xl cursor-pointer select-none' onClick={() => setAddInputShow(false)}>
               <FaXmark />
             </div>

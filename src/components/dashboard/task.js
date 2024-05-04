@@ -29,6 +29,7 @@ export default function Task({task, refetch, members, setSearchValue, setFilterV
   const xmarkRef = useRef(null);
 
   const handleEditTask = () => {
+    setEditTaskModalOpen(false);
     const document = {
       id: tid,
       title: taskTitle,
@@ -49,7 +50,6 @@ export default function Task({task, refetch, members, setSearchValue, setFilterV
           setFilterValue({
             status: "", deadline: "", member: ""
           });
-          setEditTaskModalOpen(false);
           toast.success("Task updated successfully!");
         } else toast.error("Task not updated!");
       })
@@ -106,7 +106,7 @@ export default function Task({task, refetch, members, setSearchValue, setFilterV
 
   return (
     <>
-      <Draggable draggableId={task?.id} key={task?.id} index={tasks?.findIndex(item => item?.id === task?.id)}>
+      <Draggable draggableId={task?.id} index={tasks?.findIndex(item => item?.id === task?.id)}>
         {(provided) => (
           <div
             className="bg-primary text-white rounded cursor-pointer flex justify-between items-center gap-2"

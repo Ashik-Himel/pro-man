@@ -24,6 +24,7 @@ export default function ProjectCard({ project, refetch }) {
 
   const handleEditProject = () => {
     if (!NewProjectName) return;
+    setEditModalOpen(false);
 
     const document = {
       name: NewProjectName,
@@ -33,18 +34,17 @@ export default function ProjectCard({ project, refetch }) {
       .then(res => {
         if (res.data?.modifiedCount) {
           refetch();
-          setEditModalOpen(false);
           toast.success("Project updated successfully!");
         } else toast.error("Project not updated!");
       })
       .catch(error => toast.error(error.message));
   }
   const handleDeleteProject = () => {
+    setEditModalOpen(false);
     axios.delete(`/projects/${id}`)
       .then(res => {
         if (res.data?.deletedCount) {
           refetch();
-          setEditModalOpen(false);
           toast.success("Project deleted successfully!");
         } else toast.error("Project not deleted!");
       })

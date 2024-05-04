@@ -14,6 +14,7 @@ export default function AllProjects({ projects, refetch }) {
 
   const handleAddProject = () => {
     if (!projectName) return;
+    setAddModalOpen(false);
 
     const document = {
       name: projectName,
@@ -24,7 +25,6 @@ export default function AllProjects({ projects, refetch }) {
       .then(res => {
         if (res.data?.insertedId) {
           refetch();
-          setAddModalOpen(false);
           setProjectName('');
           setTasks([]);
           setMembers([]);
