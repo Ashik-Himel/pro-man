@@ -1,10 +1,12 @@
+import { moveArrayElement } from '@/lib/arrayFunctions';
+import { tasksStore } from '@/store/useStore';
 import { Button } from "antd";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import { FaBars } from "react-icons/fa";
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Sidebar from "./sidebar";
-import { tasksStore } from '@/store/useStore';
 import TaskColumn from "./taskColumn";
 
 export default function ProjectDetailsCard({ project, refetch }) {
@@ -44,6 +46,23 @@ export default function ProjectDetailsCard({ project, refetch }) {
     
     setTasks(newTasks);
   }, [filterValue])
+
+  const handleDragEnd = (event) => {
+    const { source, destination, draggableId } = event;
+
+    if (source?.droppableId !== destination?.droppableId) {
+      const statusUpdatedArray = tasks?.map(item => {
+        if (item?.id === draggableId) {
+          item.status = destination?.droppableId;
+          return item;
+        }
+        return item;
+      })
+
+      const updatedArray = moveArrayElement(statusUpdatedArray, source?.index, destination?.index);
+      setTasks(updatedArray);
+    }
+  }
 
   return (
     <>
@@ -100,9 +119,11 @@ export default function ProjectDetailsCard({ project, refetch }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-3 gap-6 mt-8">
-          <TaskColumn title='todo' tasks={tasks?.filter(task => task?.status === "todo")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
-          <TaskColumn title='doing' tasks={tasks?.filter(task => task?.status === "doing")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
-          <TaskColumn title='done' tasks={tasks?.filter(task => task?.status === "done")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <TaskColumn title='todo' tasks={tasks?.filter(task => task?.status === "todo")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+            <TaskColumn title='doing' tasks={tasks?.filter(task => task?.status === "doing")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+            <TaskColumn title='done' tasks={tasks?.filter(task => task?.status === "done")} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />
+          </DragDropContext>
         </div>
       </div>
 

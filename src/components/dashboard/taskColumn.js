@@ -1,11 +1,12 @@
-import { PlusOutlined } from '@ant-design/icons';
-import Task from './task';
-import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '@/lib/axiosInstance';
-import toast from 'react-hot-toast';
-import { useParams } from 'next/navigation';
 import { tasksStore } from '@/store/useStore';
+import { PlusOutlined } from '@ant-design/icons';
+import { useParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+import toast from 'react-hot-toast';
 import { FaXmark } from 'react-icons/fa6';
+import Task from './task';
 
 export default function TaskColumn({title, tasks, refetch, members, setSearchValue, setFilterValue}) {
   const setTasks = tasksStore(state => state.setTasks);
@@ -49,11 +50,20 @@ export default function TaskColumn({title, tasks, refetch, members, setSearchVal
   return (
     <div className="border-2 border-primary rounded p-3 bg-[rgba(100,13,107,0.1)] md:col-span-2 xl:col-span-1">
       <h4 className="text-[18px] font-medium uppercase mb-2">{title}</h4>
-      <div className="space-y-2">
-        {
-          tasks?.length ? tasks?.map(task => <Task key={task?.id} task={task} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />) : <p className="font-medium italic text-gray-600">No task available in {title}</p>
-        }
-      </div>
+      <Droppable droppableId={title}>
+        {(provided) => (
+          <div
+            className="space-y-2"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {
+              tasks?.length ? tasks?.map(task => <Task key={task?.id} task={task} refetch={refetch} members={members} setSearchValue={setSearchValue} setFilterValue={setFilterValue} />) : <p className="font-medium italic text-gray-600">No task available in {title}</p>
+            }
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
 
       <div className='mt-1 relative'>
         <button className='font-medium flex justify-start items-center gap-1 pt-2 pb-[7px]' ref={addTaskRef} onClick={() => setAddInputShow(true)}><PlusOutlined /> Add Task</button>

@@ -1,14 +1,15 @@
 import axiosInstance from '@/lib/axiosInstance';
+import { tasksStore } from '@/store/useStore';
+import { EditFilled } from '@ant-design/icons';
 import { Button, ConfigProvider, Modal } from 'antd';
+import { differenceInDays, format } from 'date-fns';
+import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import toast from 'react-hot-toast';
 import { FaUser } from "react-icons/fa";
 import { FaXmark } from 'react-icons/fa6';
 import { MdOutlineWatchLater } from "react-icons/md";
-import { EditFilled } from '@ant-design/icons';
-import {format, differenceInDays} from 'date-fns'
-import { tasksStore } from '@/store/useStore';
-import { useParams } from 'next/navigation';
 
 export default function Task({task, refetch, members, setSearchValue, setFilterValue}) {
   const {id: projectId} = useParams();
@@ -105,28 +106,38 @@ export default function Task({task, refetch, members, setSearchValue, setFilterV
 
   return (
     <>
-      <div className="bg-primary text-white rounded cursor-pointer flex justify-between items-center gap-2">
-        <div className='flex-1 h-full pl-4 py-2' onClick={() => setTaskDetailsModalOpen(true)}>
-          <p>{title}</p>
-          {
-            member || deadline ? <div className='flex flex-wrap justify-start items-center gap-x-4 gap-y-1 mt-2 text-sm'>
+      <Draggable draggableId={task?.id} key={task?.id} index={tasks?.findIndex(item => item?.id === task?.id)}>
+        {(provided) => (
+          <div
+            className="bg-primary text-white rounded cursor-pointer flex justify-between items-center gap-2"
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <div className='flex-1 h-full pl-4 py-2' onClick={() => setTaskDetailsModalOpen(true)}>
+              <p>{title}</p>
               {
-                member ? <div className='flex justify-start items-center gap-2'>
-                  <FaUser /> {member}
+                member || deadline ? <div className='flex flex-wrap justify-start items-center gap-x-4 gap-y-1 mt-2 text-sm'>
+                  {
+                    member ? <div className='flex justify-start items-center gap-2'>
+                      <FaUser /> {member}
+                    </div> : null
+                  }
+                  {
+                    deadline ? <div className='flex justify-start items-center gap-2'>
+                      <MdOutlineWatchLater className='text-[17px]' /> {differenceInDays(deadline, new Date())} days
+                    </div> : null
+                  }
                 </div> : null
               }
-              {
-                deadline ? <div className='flex justify-start items-center gap-2'>
-                  <MdOutlineWatchLater className='text-[17px]' /> {differenceInDays(deadline, new Date())} days
-                </div> : null
-              }
-            </div> : null
-          }
-        </div>
-        <button className='pr-4 py-2' onClick={() => setDeleteTaskModalOpen(true)} ref={xmarkRef}>
-          <FaXmark className="text-xl" />
-        </button>
-      </div>
+            </div>
+            <button className='pr-4 py-2' onClick={() => setDeleteTaskModalOpen(true)} ref={xmarkRef}>
+              <FaXmark className="text-xl" />
+            </button>
+            {provided.placeholder}
+          </div>
+        )}
+      </Draggable>
 
       <ConfigProvider theme={{"token": {"colorPrimary": "#640d6b",}}}>
         <Modal
